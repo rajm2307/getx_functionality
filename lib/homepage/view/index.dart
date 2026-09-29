@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:go_router/go_router.dart';
@@ -14,19 +15,24 @@ class Homepage extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: 
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text('Homepage'),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              context.pushNamed(Cartpage.name);
-            },
-          ),
-        ],
-      ),),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Homepage'),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {
+                context.pushNamed(Cartpage.name);
+              },
+            ),
+            // IconButton(
+            //   icon: const Icon(Icons.bug_report),
+            //   onPressed: () => FirebaseCrashlytics.instance.crash(),
+            // ),
+          ],
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await controller.fetchCategories();

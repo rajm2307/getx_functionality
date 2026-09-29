@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:myproject/homepage/helper/helper.dart';
 
@@ -71,9 +72,15 @@ class HomepageController extends GetxController {
 
       products.assignAll(productList);
       // products.value = productList;
-    } catch (e) {
-      log('Error fetching products: $e');
-    } finally {
+    }  catch (e, st) {
+    log('Error fetching products: $e');
+    FirebaseCrashlytics.instance.recordError(
+      e,
+      st,
+      reason: 'fetchProducts failed',
+      fatal: false, // non-fatal: app keeps running
+    );
+  } finally {
       isProductsLoading.value = false;
     }
   }
@@ -84,9 +91,15 @@ class HomepageController extends GetxController {
 
       final categoriesList = await ProductService.fetchCategories();
       categories.assignAll(categoriesList);
-    } catch (e) {
-      log('Error fetching categories: $e');
-    } finally {
+    } catch (e, st) {
+    log('Error fetching categories: $e');
+    FirebaseCrashlytics.instance.recordError(
+      e,
+      st,
+      reason: 'fetchCategories failed',
+      fatal: false, // non-fatal: app keeps running
+    );
+  } finally {
       isCategoriesLoading.value = false;
     }
   }
@@ -102,9 +115,15 @@ class HomepageController extends GetxController {
         category,
       );
       products.assignAll(fetchedProducts);
-    } catch (e) {
-      log('Error fetching filtered products: $e');
-    } finally {
+    } catch (e, st) {
+    log('Error fetching products for category $category: $e');
+    FirebaseCrashlytics.instance.recordError(
+      e,
+      st,
+      reason: 'fetchProductsByCategory failed',
+      fatal: false, // non-fatal: app keeps running
+    );
+  } finally {
       isProductsLoading.value = false;
     }
   }
